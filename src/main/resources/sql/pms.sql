@@ -1,7 +1,9 @@
--- 商品管理系统 (Product Management System) 数据库初始化脚本
--- 创建时间: 2025-08-26
+-- EMall商城系统数据库初始化脚本
+-- 包含：商品管理系统(PMS) + 用户管理系统(UMS)
+-- 修改时间: 2025-08-28
 
 -- 删除表（如果存在）
+DROP TABLE IF EXISTS `ums_member`;
 DROP TABLE IF EXISTS `pms_product`;
 
 -- 创建商品信息表
@@ -36,3 +38,41 @@ INSERT INTO `pms_product` (`product_name`, `price`, `stock_quantity`, `product_s
 
 -- 查询验证
 SELECT * FROM `pms_product` ORDER BY `id`;
+
+-- ========================================
+-- 用户管理系统 (User Management System)
+-- ========================================
+
+-- 创建会员信息表
+CREATE TABLE `ums_member` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '会员ID，主键',
+    `username` VARCHAR(64) NOT NULL COMMENT '会员用户名',
+    `password` VARCHAR(255) NOT NULL COMMENT '会员密码（加密存储）',
+    `nickname` VARCHAR(100) NULL COMMENT '会员昵称',
+    `phone` VARCHAR(20) NULL COMMENT '会员手机号',
+    `email` VARCHAR(100) NULL COMMENT '会员邮箱',
+    `status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '会员状态：0->禁用；1->启用',
+    `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_username` (`username`),
+    UNIQUE KEY `uk_phone` (`phone`),
+    UNIQUE KEY `uk_email` (`email`),
+    INDEX `idx_status` (`status`),
+    INDEX `idx_create_time` (`create_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员信息表';
+
+-- 插入测试数据
+INSERT INTO `ums_member` (`username`, `password`, `nickname`, `phone`, `email`, `status`) VALUES
+('testuser', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HnQrX22', '测试用户', '13800138001', 'test@emall.com', 1),
+('john_doe', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HnQrX22', 'John Doe', '13800138002', 'john@emall.com', 1),
+('jane_smith', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HnQrX22', 'Jane Smith', '13800138003', 'jane@emall.com', 1),
+('mike_wang', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HnQrX22', '王小明', '13800138004', 'mike@emall.com', 1),
+('lisa_chen', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HnQrX22', '陈丽莎', '13800138005', 'lisa@emall.com', 1),
+('david_liu', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HnQrX22', '刘大伟', '13800138006', 'david@emall.com', 0),
+('sarah_zhou', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HnQrX22', '周莎拉', '13800138007', 'sarah@emall.com', 1),
+('tom_zhang', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HnQrX22', '张汤姆', '13800138008', 'tom@emall.com', 1),
+('emma_li', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HnQrX22', '李艾玛', '13800138009', 'emma@emall.com', 1);
+
+-- 查询验证
+SELECT * FROM `ums_member` ORDER BY `id`;

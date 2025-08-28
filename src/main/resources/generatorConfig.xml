@@ -43,7 +43,7 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="org.example.mall.mbg.mapper"
                              targetProject="src\main\java"/>
         <!--生成全部表tableName设为%-->
-        <table tableName="pms_product">
+        <table tableName="%">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>
